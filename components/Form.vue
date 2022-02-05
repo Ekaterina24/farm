@@ -1,6 +1,12 @@
 <template>
   <div class="col-md-4">
     <form @submit.prevent="addAnimalToList">
+      <p v-if="errors.length">
+        <b>Пожалуйста исправьте указанные ошибки:</b>
+      <ul>
+        <li v-for="error in errors">{{ error }}</li>
+      </ul>
+      </p>
       <v-text-field label="Тип" v-model="type"></v-text-field>
       <v-text-field label="Имя" v-model="name"></v-text-field>
       <v-text-field label="Вес" v-model="weight"></v-text-field>
@@ -13,6 +19,7 @@
 
 <script>
 import {mapMutations} from 'vuex'
+
 export default {
   name: "Form",
   data() {
@@ -21,12 +28,14 @@ export default {
       name: '',
       weight: '',
       color: '',
-      sex: ''
+      sex: '',
+      errors: [],
     }
   },
   methods: {
     ...mapMutations(['createAnimal']),
-    addAnimalToList() {
+    addAnimalToList(e) {
+      this.checkForm(e)
       this.$store.dispatch('postAnimals', {
         type: this.type,
         name: this.name,
@@ -39,6 +48,31 @@ export default {
       this.weight = ''
       this.color = ''
       this.sex = ''
+    },
+    checkForm: function (e) {
+      if (this.type && this.name && this.weight && this.color && this.sex) {
+        return true;
+      }
+
+      this.errors = [];
+
+      if (!this.type) {
+        this.errors.push('Требуется указать тип.');
+      }
+      if (!this.name) {
+        this.errors.push('Требуется указать имя.');
+      }
+      if (!this.weight) {
+        this.errors.push('Требуется указать вес.');
+      }
+      if (!this.color) {
+        this.errors.push('Требуется указать цвет.');
+      }
+      if (!this.sex) {
+        this.errors.push('Требуется указать пол.');
+      }
+
+      e.preventDefault();
     }
   }
 
