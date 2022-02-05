@@ -35,7 +35,10 @@ export default {
   methods: {
     ...mapMutations(['createAnimal']),
     addAnimalToList(e) {
-      this.checkForm(e)
+      if (!this.checkForm(e)) {
+        return false
+      }
+
       this.$store.dispatch('postAnimals', {
         type: this.type,
         name: this.name,
