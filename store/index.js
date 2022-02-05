@@ -22,6 +22,21 @@ export const actions = {
     context.commit('addAnimal', animals)
   },
 
+  async postAnimals(context, payload) {
+    const res = await fetch(
+      'https://demo-api.vsdev.space/api/farm/baby',
+      { method: 'POST', body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+      }
+    )
+    // const animals = await res.json()
+    console.log(payload, res)
+    // this.mutations.createAnimal(payload)
+    context.commit('createAnimal', payload)
+  },
+
   async getCountAnimals(context) {
     const res = await fetch(
       'https://demo-api.vsdev.space/api/farm/left_widget'
@@ -64,7 +79,7 @@ export const mutations = {
     state.aboutContent = aboutContent
   },
   createAnimal(state, newAnimal) {
-    state.animals.unshift(newAnimal)
+    state.animals.push(newAnimal)
   }
 }
 

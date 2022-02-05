@@ -27,7 +27,7 @@ export default {
   methods: {
     ...mapMutations(['createAnimal']),
     addAnimalToList() {
-      this.createAnimal({
+      this.$store.dispatch('postAnimals', {
         type: this.type,
         name: this.name,
         weight: this.weight,
